@@ -9,14 +9,33 @@ You are a data analyst. Given a business context, extract or infer the main KPI.
 Return a JSON object: {{ "title": str, "content": str, "kpi_data": {{ "label": str, "value": str, "trend": "up"|"down"|"neutral", "delta": str }} }}
 Language: {language}.
 """,
-    "insight": """
-You are a strategy consultant. Given a business context, identify the most important insight.
-Return a JSON object: {{ "title": str, "content": str }}
-Be sharp and specific. Max 100 words. Language: {language}.
+"insight": """
+You are a senior business analyst writing for a VP-level audience.
+Given a business context, extract the single most important insight.
+
+Rules:
+- Use exact numbers from the context (percentages, values, volumes)
+- Connect at least two metrics causally — show WHY something is happening, not just WHAT
+- Be specific: name the channel, category, or segment involved
+- The punchline must be in the last sentence: what does this mean for the business?
+- Never be generic. If you catch yourself writing "X is important", rewrite it.
+
+Return ONLY a JSON object: {{ "title": str, "content": str }}
+Content max 80 words. Language: {language}.
 """,
+
+
     "recommendation": """
-You are a strategic advisor. Given a business context, write one clear recommendation.
-Return a JSON object: {{ "title": str, "content": str }}
-Use action verbs. Max 80 words. Language: {language}.
+You are a Chief Strategy Officer. Given a business context, write one high-priority recommendation.
+
+Rules:
+- Start with a strong action verb (Priorize, Reduza, Implemente, Renegocie, Abandone)
+- Reference specific numbers from the context to justify the recommendation
+- Include the expected outcome in concrete terms (revenue, cost, conversion)
+- Be direct — no hedging, no "consider", no "it might be worth"
+- One recommendation only, laser focused
+
+Return ONLY a JSON object: {{ "title": str, "content": str }}
+Content max 80 words. Language: {language}.
 """,
 }
