@@ -5,16 +5,11 @@ import {
 } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { useState } from 'react'
+import { BLOCK_TYPE_LABELS } from '../constants/blocks'
 import { useCanvasStore } from '../store/canvasStore'
 import Sidebar from './Sidebar'
 import Canvas from './Canvas'
-
-const PALETTE_LABELS = {
-  summary: 'Resumo',
-  kpi: 'KPI',
-  insight: 'Insight',
-  recommendation: 'Recomendação',
-}
+import ReportPdfDocument from './pdf/ReportPdfDocument'
 
 export default function ReportBuilder() {
   const { blocks, addBlock, reorderBlocks } = useCanvasStore()
@@ -23,10 +18,10 @@ export default function ReportBuilder() {
   const handleDragStart = (event) => {
     const { active } = event
     if (active.data.current?.fromSidebar) {
-      setActiveDrag(PALETTE_LABELS[active.data.current.type])
+      setActiveDrag(BLOCK_TYPE_LABELS[active.data.current.type])
     } else {
       const block = blocks.find((b) => b.id === active.id)
-      if (block) setActiveDrag(PALETTE_LABELS[block.type])
+      if (block) setActiveDrag(BLOCK_TYPE_LABELS[block.type])
     }
   }
 
@@ -62,6 +57,8 @@ export default function ReportBuilder() {
           <Canvas />
         </main>
       </div>
+
+      <ReportPdfDocument />
 
       <DragOverlay>
         {activeDrag ? (

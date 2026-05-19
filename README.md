@@ -1,15 +1,15 @@
 # AI Report Builder
 
-Aplicação fullstack para montar relatórios analíticos de forma visual: arraste blocos para o canvas e use IA para gerar o conteúdo de cada bloco com base em um contexto fornecido.
+Fullstack app for building analytical reports visually: drag blocks onto the canvas and use AI to generate each block's content from user-provided context.
 
-## Arquitetura
+## Architecture
 
 ```
 ┌─────────────────────────────────────────┐
 │              React Frontend             │
 │  ┌──────────┐        ┌───────────────┐  │
 │  │ Sidebar  │──drag──▶    Canvas     │  │
-│  │ (blocos) │        │  (drop zone)  │  │
+│  │ (blocks) │        │  (drop zone)  │  │
 │  └──────────┘        └──────┬────────┘  │
 │                             │ POST      │
 └─────────────────────────────┼───────────┘
@@ -25,13 +25,13 @@ Aplicação fullstack para montar relatórios analíticos de forma visual: arras
 
 ## Stack
 
-| Camada   | Tecnologias                                      |
-|----------|--------------------------------------------------|
-| Frontend | React, Vite, TailwindCSS, dnd-kit, Zustand, Axios |
-| Backend  | Python, FastAPI, Pydantic, Groq SDK              |
-| Deploy   | Railway (backend) + Vercel (frontend)          |
+| Layer    | Technologies                                       |
+|----------|----------------------------------------------------|
+| Frontend | React, Vite, TailwindCSS, dnd-kit, Zustand, Axios, jsPDF |
+| Backend  | Python, FastAPI, Pydantic, Groq SDK                |
+| Deploy   | Railway (backend) + Vercel (frontend)              |
 
-## Início rápido
+## Quick start
 
 ### Backend
 
@@ -40,11 +40,11 @@ cd backend
 python -m venv .venv
 .venv\Scripts\activate        # Windows
 pip install -r requirements.txt
-cp .env.example .env          # adicione GROQ_API_KEY
-uvicorn main:app --reload --port 8000
+cp .env.example .env          # add GROQ_API_KEY
+uvicorn main:app --reload --port 8080
 ```
 
-API disponível em `http://localhost:8000` — documentação em `/docs`.
+API at `http://localhost:8080` — docs at `/docs`.
 
 ### Frontend
 
@@ -54,41 +54,47 @@ npm install
 npm run dev
 ```
 
-App em `http://localhost:5173`. O proxy do Vite encaminha `/api` para `localhost:8000`.
+App at `http://localhost:5173`. In development, `VITE_API_URL` in `.env.development` points to the backend (default `http://127.0.0.1:8080/api`).
 
-## Tipos de bloco
+## Block types
 
-| Tipo            | Descrição                          |
-|-----------------|------------------------------------|
-| `summary`       | Resumo executivo                   |
-| `kpi`           | Indicador com valor, tendência e delta |
-| `insight`       | Insight estratégico                |
-| `recommendation`| Recomendação acionável             |
+| Type             | Description                              |
+|------------------|------------------------------------------|
+| `summary`        | Executive summary                        |
+| `kpi`            | Metric with value, trend, and delta      |
+| `insight`        | Strategic insight                        |
+| `recommendation` | Actionable recommendation                |
 
-## Contrato da API
+## API contract
 
 ```
 POST /api/generate-block
 
 {
   "block_type": "summary",
-  "context": "vendas do Q1 cresceram 20% vs Q4",
-  "language": "pt-BR"
+  "context": "Q1 revenue grew 20% vs Q4",
+  "language": "en-US"
 }
 ```
 
-## Decisões de arquitetura
+## Features
 
-| Decisão | Motivo |
-|---------|--------|
-| FastAPI | Async nativo, ideal para I/O com APIs de IA |
-| dnd-kit | Mantido ativamente, melhor acessibilidade |
-| Zustand | Estado simples sem overhead do Redux |
-| `response_format: json_object` | JSON válido sem parsing de markdown |
-| Prompts por tipo | Contrato de saída claro por bloco |
+- Drag-and-drop block palette and canvas reordering
+- AI generation per block via Groq (`llama-3.3-70b-versatile`)
+- **Export as PDF** — enabled after at least one block has AI-generated content
+
+## Architecture decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| FastAPI | Native async, ideal for AI API I/O |
+| dnd-kit | Actively maintained, strong accessibility |
+| Zustand | Simple global state without Redux overhead |
+| `response_format: json_object` | Reliable JSON from the model |
+| Per-type prompts | Clear output contract per block |
 
 ## Deploy
 
-**Backend (Railway):** defina `GROQ_API_KEY` e inicie com `uvicorn main:app --host 0.0.0.0 --port $PORT`.
+**Backend (Railway):** set `GROQ_API_KEY` and run `uvicorn main:app --host 0.0.0.0 --port $PORT`.
 
-**Frontend (Vercel):** defina `VITE_API_URL` com a URL pública do backend + `/api`.
+**Frontend (Vercel):** set `VITE_API_URL` to your public backend URL + `/api`.

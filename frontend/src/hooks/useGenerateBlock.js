@@ -13,7 +13,7 @@ export function useGenerateBlock() {
       const { data } = await api.post('/generate-block', {
         block_type: block.type,
         context: block.context,
-        language: 'pt-BR',
+        language: 'en-US',
       })
       setResult(block.id, data)
     } catch (err) {

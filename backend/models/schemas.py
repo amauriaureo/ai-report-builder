@@ -13,7 +13,7 @@ class BlockType(str, Enum):
 class GenerateBlockRequest(BaseModel):
     block_type: BlockType
     context: str
-    language: str = "pt-BR"
+    language: str = "en-US"
 
 
 class KPIData(BaseModel):

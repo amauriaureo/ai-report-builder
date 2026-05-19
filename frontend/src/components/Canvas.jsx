@@ -5,6 +5,7 @@ import {
 } from '@dnd-kit/sortable'
 import { useCanvasStore } from '../store/canvasStore'
 import Block from './Block'
+import ExportPdfButton from './ExportPdfButton'
 
 function CanvasDropZone({ children }) {
   const { setNodeRef, isOver } = useDroppable({ id: 'canvas' })
@@ -27,13 +28,14 @@ export default function Canvas() {
   return (
     <CanvasDropZone>
       <div className="mx-auto max-w-2xl">
-        <h1 className="mb-6 text-2xl font-bold text-white">Relatório</h1>
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <h1 className="text-2xl font-bold text-white">Report</h1>
+          <ExportPdfButton />
+        </div>
 
         {blocks.length === 0 && (
           <div className="flex min-h-64 items-center justify-center rounded-xl border-2 border-dashed border-slate-600 bg-slate-800/50">
-            <p className="text-slate-400">
-              Arraste blocos da sidebar para começar
-            </p>
+            <p className="text-slate-400">Drag blocks from the sidebar to get started</p>
           </div>
         )}
 

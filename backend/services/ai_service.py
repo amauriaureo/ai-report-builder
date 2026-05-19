@@ -19,7 +19,7 @@ def _get_client() -> AsyncGroq:
     if _client is None:
         api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
-            raise ValueError("GROQ_API_KEY não configurada")
+            raise ValueError("GROQ_API_KEY is not configured")
         _client = AsyncGroq(api_key=api_key)
     return _client
 

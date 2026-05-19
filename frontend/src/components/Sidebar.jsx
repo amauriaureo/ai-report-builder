@@ -1,16 +1,5 @@
 import { useDraggable } from '@dnd-kit/core'
-
-const BLOCK_TYPES = [
-  { type: 'summary', label: 'Resumo', icon: '📋', description: 'Resumo executivo' },
-  { type: 'kpi', label: 'KPI', icon: '📊', description: 'Indicador principal' },
-  { type: 'insight', label: 'Insight', icon: '💡', description: 'Análise estratégica' },
-  {
-    type: 'recommendation',
-    label: 'Recomendação',
-    icon: '🎯',
-    description: 'Ação sugerida',
-  },
-]
+import { BLOCK_PALETTE } from '../constants/blocks'
 
 function DraggableBlock({ type, label, icon, description }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -39,10 +28,10 @@ function DraggableBlock({ type, label, icon, description }) {
 export default function Sidebar() {
   return (
     <aside className="flex w-64 shrink-0 flex-col border-r border-slate-700 bg-slate-900 p-4">
-      <h2 className="mb-1 text-lg font-semibold text-white">Blocos</h2>
-      <p className="mb-4 text-xs text-slate-400">Arraste para o canvas</p>
+      <h2 className="mb-1 text-lg font-semibold text-white">Blocks</h2>
+      <p className="mb-4 text-xs text-slate-400">Drag onto the canvas</p>
       <div className="flex flex-col gap-2">
-        {BLOCK_TYPES.map((block) => (
+        {BLOCK_PALETTE.map((block) => (
           <DraggableBlock key={block.type} {...block} />
         ))}
       </div>
